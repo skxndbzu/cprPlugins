@@ -1,0 +1,63 @@
+{
+  "manifestVersion": 1,
+  "publisher": "local",
+  "name": "oai-basispoints",
+  "displayName": "Basis Points（CPR 原生执行链）",
+  "version": "0.3.1",
+  "description": "按选中账号所属分组选择 Basis Points；未指定组走原接口。需要 0.3 配套宿主，调度和计费仍由 CPR 负责。",
+  "license": "MIT",
+  "engines": {
+    "codex-proxy-rs": ">=3.15.2, <=3.17.0"
+  },
+  "main": "bin/cpr-plugin-oai-basispoints",
+  "runtime": "trustedProcess",
+  "contributes": {
+    "middleware": {
+      "stages": [
+        "attempt"
+      ],
+      "inputFormats": [
+        "openai"
+      ],
+      "outputFormats": [
+        "openai",
+        "openai-basispoints-v2"
+      ]
+    }
+  },
+  "permissions": [
+    "requests"
+  ],
+  "resources": {
+    "LICENSE": "text/plain",
+    "licenses/Apache-2.0.txt": "text/plain",
+    "THIRD_PARTY_NOTICES.md": "text/markdown",
+    "README.md": "text/markdown",
+    "VALIDATION.md": "text/markdown"
+  },
+  "configurationSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "account_group_ids": {
+        "type": "array",
+        "items": {"type": "string", "pattern": "^grp_[0-9a-f]{32}$"},
+        "maxItems": 256,
+        "default": [],
+        "title": "使用 Basis Points 的账号组 ID",
+        "description": "按实际选中账号的分组判断；空列表不接管任何账号。需要 0.3 配套宿主。"
+      },
+      "models": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "default": [
+          "gpt-6-astra"
+        ],
+        "title": "启用的原生模型",
+        "description": "使用 CPR 原生模型名；空列表不接管请求。由功能绑定限定测试 Key 或账号组。"
+      }
+    }
+  }
+}

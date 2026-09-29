@@ -1,0 +1,25 @@
+[package]
+name = "cpr-plugin-oai-basispoints"
+version = "0.3.1"
+edition = "2024"
+rust-version = "1.97"
+license = "MIT"
+description = "Basis Points protocol adapter for Codex Proxy RS"
+
+[dependencies]
+gateway-plugin-sdk = { git = "https://github.com/zyycn/codex-proxy-rs.git", rev = "1c6b5a8f1045781d31a301382f1182f1a5657ec8", features = ["io"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+thiserror = "2.0.18"
+uuid = { version = "1.22.0", features = ["v5"] }
+tokio = { version = "1.52.3", features = ["io-std", "io-util", "macros", "rt-multi-thread", "sync", "time"] }
+
+[dev-dependencies]
+tokio = { version = "1.52.3", features = ["process"] }
+
+[profile.release]
+strip = true
+lto = "thin"
+
+[lints.rust]
+unsafe_code = "forbid"
